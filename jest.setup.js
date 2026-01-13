@@ -1,4 +1,7 @@
-import '@testing-library/jest-native/extend-expect';
+// Define global __DEV__ for React Native
+global.__DEV__ = true;
+
+require('@testing-library/jest-native/extend-expect');
 
 // Mock expo-av
 jest.mock('expo-av', () => ({
