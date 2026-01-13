@@ -3,11 +3,19 @@ global.__DEV__ = true;
 
 require('@testing-library/jest-native/extend-expect');
 
-// Mock expo-av
+// Mock expo-av - make sure the sound object has all methods
 jest.mock('expo-av', () => ({
   Audio: {
     Sound: {
-      createAsync: jest.fn(() => Promise.resolve({ sound: { playAsync: jest.fn(), stopAsync: jest.fn(), unloadAsync: jest.fn() } })),
+      createAsync: jest.fn(() => Promise.resolve({
+        sound: {
+          playAsync: jest.fn(),
+          stopAsync: jest.fn(),
+          unloadAsync: jest.fn(),
+          setIsLoopingAsync: jest.fn(),
+          setVolumeAsync: jest.fn(),
+        }
+      })),
     },
     setAudioModeAsync: jest.fn(() => Promise.resolve()),
   },
