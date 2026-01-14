@@ -2,21 +2,32 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   SafeAreaView,
   ScrollView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { TechniqueId } from '../types';
-import { TECHNIQUES } from '../constants';
-import { usePreferences } from '../hooks/usePreferences';
+import { GradientBackground } from '../components/ui';
+import { TechniqueCard } from '../components/TechniqueCard';
+import { QuickStartButton } from '../components/QuickStartButton';
 import { BreathingTechnique } from '../components/BreathingTechnique';
 import { AudioMaskingTechnique } from '../components/AudioMaskingTechnique';
 import { MentalDistractionTechnique } from '../components/MentalDistractionTechnique';
+import { usePreferences } from '../hooks/usePreferences';
+import { useGreeting } from '../hooks/useGreeting';
+import { TechniqueId } from '../types';
+import { TECHNIQUES } from '../constants';
+import { colors, typography, spacing } from '../theme';
+
+const IMPLEMENTED_TECHNIQUES: TechniqueId[] = [
+  'breathing',
+  'audio-masking',
+  'mental-distraction',
+];
 
 export function HomeScreen() {
   const { preferences } = usePreferences();
+  const greeting = useGreeting();
   const [activeTechnique, setActiveTechnique] = useState<TechniqueId | null>(null);
 
   const handleQuickStart = () => {
@@ -24,7 +35,9 @@ export function HomeScreen() {
   };
 
   const handleTechniqueSelect = (id: TechniqueId) => {
-    setActiveTechnique(id);
+    if (IMPLEMENTED_TECHNIQUES.includes(id)) {
+      setActiveTechnique(id);
+    }
   };
 
   const handleClose = () => {
@@ -46,147 +59,97 @@ export function HomeScreen() {
       case 'mental-distraction':
         return <MentalDistractionTechnique onClose={handleClose} />;
       default:
-        // Placeholder for techniques not yet implemented
-        return (
-          <View style={styles.container}>
-            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-              <Text style={styles.closeButtonText}>✕</Text>
-            </TouchableOpacity>
-            <Text style={styles.comingSoon}>Coming Soon</Text>
-          </View>
-        );
+        return null;
     }
   }
 
+  const defaultTechnique = TECHNIQUES.find(
+    (t) => t.id === preferences.defaultTechnique
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="light" />
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="light" />
 
-      <View style={styles.header}>
-        <Text style={styles.title}>ReliefKey</Text>
-        <Text style={styles.subtitle}>Find your calm</Text>
-      </View>
+        <View style={styles.header}>
+          <Text style={styles.greeting}>
+            {greeting.emoji} {greeting.text}
+          </Text>
+          <Text style={styles.title}>ReliefKey</Text>
+          <Text style={styles.subtitle}>Find your calm</Text>
+        </View>
 
-      <TouchableOpacity
-        style={styles.quickStartButton}
-        onPress={handleQuickStart}
-        testID="quick-start-button"
-      >
-        <Text style={styles.quickStartText}>Quick Start</Text>
-        <Text style={styles.quickStartSubtext}>
-          {TECHNIQUES.find((t) => t.id === preferences.defaultTechnique)?.name}
-        </Text>
-      </TouchableOpacity>
+        <QuickStartButton
+          techniqueName={defaultTechnique?.name || 'Guided Breathing'}
+          onPress={handleQuickStart}
+        />
 
-      <ScrollView style={styles.techniqueList}>
-        <Text style={styles.sectionTitle}>All Techniques</Text>
-        {TECHNIQUES.map((technique) => (
-          <TouchableOpacity
-            key={technique.id}
-            style={styles.techniqueButton}
-            onPress={() => handleTechniqueSelect(technique.id)}
-          >
-            <Text style={styles.techniqueIcon}>{technique.icon}</Text>
-            <View style={styles.techniqueInfo}>
-              <Text style={styles.techniqueName}>{technique.name}</Text>
-              <Text style={styles.techniqueDescription}>
-                {technique.description}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <Text style={styles.sectionTitle}>All Techniques</Text>
+          <View style={styles.grid}>
+            {TECHNIQUES.map((technique, index) => (
+              <View key={technique.id} style={styles.gridItem}>
+                <TechniqueCard
+                  technique={technique}
+                  onPress={() => handleTechniqueSelect(technique.id)}
+                  isImplemented={IMPLEMENTED_TECHNIQUES.includes(technique.id)}
+                />
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
   },
   header: {
-    padding: 20,
-    paddingTop: 40,
-    alignItems: 'center',
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.md,
+  },
+  greeting: {
+    ...typography.bodySmall,
+    color: colors.text.secondary,
+    marginBottom: spacing.xs,
   },
   title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#fff',
+    ...typography.h1,
+    color: colors.text.primary,
   },
   subtitle: {
-    fontSize: 18,
-    color: '#aaa',
-    marginTop: 5,
+    ...typography.body,
+    color: colors.text.secondary,
+    marginTop: spacing.xs,
   },
-  quickStartButton: {
-    backgroundColor: '#4CAF50',
-    marginHorizontal: 20,
-    marginVertical: 20,
-    padding: 25,
-    borderRadius: 16,
-    alignItems: 'center',
-  },
-  quickStartText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  quickStartSubtext: {
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 5,
-  },
-  techniqueList: {
+  scrollView: {
     flex: 1,
-    paddingHorizontal: 20,
+  },
+  scrollContent: {
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.xxl,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 15,
+    ...typography.h3,
+    color: colors.text.primary,
+    marginBottom: spacing.md,
+    marginLeft: spacing.sm,
   },
-  techniqueButton: {
-    backgroundColor: '#2a2a4e',
-    padding: 18,
-    borderRadius: 12,
-    marginBottom: 12,
+  grid: {
     flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
+    marginHorizontal: -spacing.xs,
   },
-  techniqueIcon: {
-    fontSize: 36,
-    marginRight: 15,
-  },
-  techniqueInfo: {
-    flex: 1,
-  },
-  techniqueName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  techniqueDescription: {
-    fontSize: 14,
-    color: '#aaa',
-    marginTop: 4,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    padding: 10,
-  },
-  closeButtonText: {
-    color: '#fff',
-    fontSize: 24,
-  },
-  comingSoon: {
-    fontSize: 24,
-    color: '#fff',
-    textAlign: 'center',
-    marginTop: 100,
+  gridItem: {
+    width: '50%',
   },
 });
