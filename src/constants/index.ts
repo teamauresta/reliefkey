@@ -48,6 +48,10 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
   defaultTechnique: 'breathing',
   hapticEnabled: true,
   preferredSound: 'white-noise',
+  theme: 'forest',
+  animationIntensity: 'full',
+  favorites: ['breathing'],
+  customBreathingPatterns: [],
 };
 
 export const STORAGE_KEYS = {

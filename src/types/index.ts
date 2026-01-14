@@ -13,10 +13,18 @@ export interface Technique {
   durationSeconds: number | null; // null = user-controlled
 }
 
+export type ThemeMode = 'forest' | 'meadow' | 'dusk';
+export type AnimationIntensity = 'full' | 'reduced' | 'minimal';
+export type SoundType = 'white-noise' | 'rain' | 'water' | 'forest' | 'campfire';
+
 export interface UserPreferences {
   defaultTechnique: TechniqueId;
   hapticEnabled: boolean;
-  preferredSound: 'white-noise' | 'rain' | 'water';
+  preferredSound: SoundType;
+  theme: ThemeMode;
+  animationIntensity: AnimationIntensity;
+  favorites: TechniqueId[];
+  customBreathingPatterns: BreathingPattern[];
 }
 
 export type BreathingPhase = 'inhale' | 'hold' | 'exhale' | 'rest';
