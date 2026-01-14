@@ -15,7 +15,9 @@ export function usePreferences() {
     try {
       const stored = await AsyncStorage.getItem(STORAGE_KEYS.PREFERENCES);
       if (stored) {
-        setPreferences(JSON.parse(stored));
+        // Merge with defaults to handle new fields added in updates
+        const parsed = JSON.parse(stored);
+        setPreferences({ ...DEFAULT_PREFERENCES, ...parsed });
       }
     } catch (error) {
       console.error('Failed to load preferences:', error);
