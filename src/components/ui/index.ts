@@ -1,5 +1,9 @@
 export { GradientBackground } from './GradientBackground';
+export { FloatingOrbs } from './FloatingOrbs';
+export { SceneParticles } from './SceneParticles';
 export { Card } from './Card';
+export { GlassCard } from './GlassCard';
 export { Button } from './Button';
 export { SettingRow } from './SettingRow';
 export { SegmentedControl } from './SegmentedControl';
+export { TechniqueHeader } from './TechniqueHeader';

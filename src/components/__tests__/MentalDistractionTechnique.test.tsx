@@ -13,17 +13,18 @@ describe('MentalDistractionTechnique', () => {
   it('shows number pad for input', () => {
     render(<MentalDistractionTechnique onClose={() => {}} />);
 
-    // Number buttons 0-9 should be present
+    // Number buttons should be present
     expect(screen.getByText('1')).toBeTruthy();
     expect(screen.getByText('5')).toBeTruthy();
-    expect(screen.getByText('0')).toBeTruthy();
+    expect(screen.getByText('C')).toBeTruthy(); // Clear button
+    expect(screen.getByText('Submit')).toBeTruthy();
   });
 
-  it('calls onClose when close button pressed', () => {
+  it('calls onClose when back button pressed', () => {
     const onClose = jest.fn();
     render(<MentalDistractionTechnique onClose={onClose} />);
 
-    fireEvent.press(screen.getByTestId('close-button'));
+    fireEvent.press(screen.getByTestId('back-button'));
 
     expect(onClose).toHaveBeenCalled();
   });

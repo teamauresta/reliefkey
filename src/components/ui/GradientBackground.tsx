@@ -5,23 +5,19 @@ import { colors } from '../../theme';
 
 interface GradientBackgroundProps {
   children: React.ReactNode;
-  variant?: 'forest' | 'sky';
   style?: ViewStyle;
 }
 
 export function GradientBackground({
   children,
-  variant = 'forest',
   style,
 }: GradientBackgroundProps) {
-  const gradientColors = colors.gradients[variant];
-
   return (
     <LinearGradient
-      colors={gradientColors}
+      colors={colors.gradients.ocean}
       style={[styles.container, style]}
       start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
+      end={{ x: 1, y: 1 }}
     >
       {children}
     </LinearGradient>

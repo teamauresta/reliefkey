@@ -15,7 +15,16 @@ export interface Technique {
 
 export type ThemeMode = 'forest' | 'meadow' | 'dusk';
 export type AnimationIntensity = 'full' | 'reduced' | 'minimal';
-export type SoundType = 'white-noise' | 'rain' | 'water' | 'forest' | 'campfire';
+export type SoundType =
+  | 'white-noise'
+  | 'sea-wave'
+  | 'thunderstorm-jungle'
+  | 'european-forest'
+  | 'forest-bird'
+  | 'night-forest'
+  | 'summer-night'
+  | 'wind-blowing'
+  | 'wind-hum';
 
 export interface UserPreferences {
   defaultTechnique: TechniqueId;

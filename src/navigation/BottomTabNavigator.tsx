@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Platform, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BlurView } from 'expo-blur';
+import { Home, BarChart3, Settings } from 'lucide-react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { ProgressScreen } from '../screens/ProgressScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
@@ -8,19 +10,80 @@ import { colors, spacing } from '../theme';
 
 const Tab = createBottomTabNavigator();
 
-function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  const icons: Record<string, string> = {
-    Home: '🏠',
-    Progress: '📊',
-    Settings: '⚙️',
-  };
+const icons = {
+  Home,
+  Progress: BarChart3,
+  Settings,
+};
+
+function TabIcon({ name, focused }: { name: keyof typeof icons; focused: boolean }) {
+  const Icon = icons[name];
 
   return (
     <View style={styles.iconContainer}>
-      <Text style={[styles.icon, focused && styles.iconFocused]}>
-        {icons[name]}
-      </Text>
+      <Icon
+        size={24}
+        color={focused ? colors.accent.primary : colors.text.secondary}
+        strokeWidth={focused ? 2 : 1.5}
+      />
       {focused && <View style={styles.indicator} />}
+    </View>
+  );
+}
+
+function CustomTabBar(props: any) {
+  const { state, descriptors, navigation } = props;
+
+  return (
+    <View style={styles.tabBarContainer}>
+      {Platform.OS === 'web' ? (
+        <View style={styles.webBlur}>
+          <TabBarContent
+            state={state}
+            descriptors={descriptors}
+            navigation={navigation}
+          />
+        </View>
+      ) : (
+        <BlurView intensity={40} tint="dark" style={styles.blurView}>
+          <TabBarContent
+            state={state}
+            descriptors={descriptors}
+            navigation={navigation}
+          />
+        </BlurView>
+      )}
+    </View>
+  );
+}
+
+function TabBarContent({ state, descriptors, navigation }: any) {
+  return (
+    <View style={styles.tabBarContent}>
+      {state.routes.map((route: any, index: number) => {
+        const { options } = descriptors[route.key];
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        return (
+          <Pressable key={route.key} style={styles.tabItem} onPress={onPress}>
+            <View style={styles.tabButton}>
+              <TabIcon name={route.name} focused={isFocused} />
+            </View>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
@@ -28,17 +91,10 @@ function TabIcon({ name, focused }: { name: string; focused: boolean }) {
 export function BottomTabNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      tabBar={(props) => <CustomTabBar {...props} />}
+      screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBar,
-        tabBarShowLabel: true,
-        tabBarLabelStyle: styles.tabLabel,
-        tabBarActiveTintColor: colors.accent.warm,
-        tabBarInactiveTintColor: colors.text.secondary,
-        tabBarIcon: ({ focused }) => (
-          <TabIcon name={route.name} focused={focused} />
-        ),
-      })}
+      }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Progress" component={ProgressScreen} />
@@ -48,32 +104,50 @@ export function BottomTabNavigator() {
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: colors.background.primary,
-    borderTopWidth: 0,
-    height: 80,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.lg,
+  tabBarContainer: {
+    position: 'absolute',
+    bottom: 24,
+    left: 24,
+    right: 24,
+    borderRadius: 32,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.glass.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 24,
+    elevation: 8,
   },
-  tabLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+  blurView: {
+    flex: 1,
+    backgroundColor: colors.glass.surface,
+  },
+  webBlur: {
+    flex: 1,
+    backgroundColor: 'rgba(10, 22, 40, 0.8)',
+    backdropFilter: 'blur(40px)',
+  },
+  tabBarContent: {
+    flexDirection: 'row',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  tabButton: {
+    padding: spacing.sm,
   },
   iconContainer: {
     alignItems: 'center',
   },
-  icon: {
-    fontSize: 24,
-    opacity: 0.6,
-  },
-  iconFocused: {
-    opacity: 1,
-  },
   indicator: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: colors.accent.warm,
-    marginTop: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.accent.primary,
+    marginTop: 6,
   },
 });

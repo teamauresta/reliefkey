@@ -14,6 +14,7 @@ jest.mock('expo-av', () => ({
           unloadAsync: jest.fn(),
           setIsLoopingAsync: jest.fn(),
           setVolumeAsync: jest.fn(),
+          getStatusAsync: jest.fn(() => Promise.resolve({ isLoaded: true })),
         }
       })),
     },
@@ -46,6 +47,37 @@ jest.mock('expo-status-bar', () => ({
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: ({ children }) => children,
 }));
+
+// Mock expo-blur
+jest.mock('expo-blur', () => ({
+  BlurView: ({ children }) => children,
+}));
+
+// Mock lucide-react-native
+jest.mock('lucide-react-native', () => {
+  const React = require('react');
+  const createMockIcon = () => (props) => React.createElement('View', props);
+  return {
+    Wind: createMockIcon(),
+    Volume2: createMockIcon(),
+    Brain: createMockIcon(),
+    Sparkles: createMockIcon(),
+    Eye: createMockIcon(),
+    Home: createMockIcon(),
+    BarChart3: createMockIcon(),
+    Settings: createMockIcon(),
+    Play: createMockIcon(),
+    Pause: createMockIcon(),
+    X: createMockIcon(),
+    ChevronRight: createMockIcon(),
+    Check: createMockIcon(),
+    Moon: createMockIcon(),
+    Sun: createMockIcon(),
+    Bell: createMockIcon(),
+    Clock: createMockIcon(),
+    LucideIcon: () => null,
+  };
+});
 
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {

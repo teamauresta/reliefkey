@@ -1,32 +1,44 @@
 export const colors = {
-  // Backgrounds
+  // Ocean Depths Background
   background: {
-    primary: '#1a2e1a',
-    secondary: '#2d4a3e',
-    surface: 'rgba(62, 92, 78, 0.6)',
-    surfaceSolid: '#3e5c4e',
+    start: '#0a1628',      // deep navy
+    mid: '#134e5e',        // ocean teal
+    end: '#1a3a4a',        // deep sea
+  },
+  // Glassmorphism
+  glass: {
+    surface: 'rgba(255, 255, 255, 0.08)',
+    surfaceHover: 'rgba(255, 255, 255, 0.12)',
+    border: 'rgba(255, 255, 255, 0.15)',
+    borderLight: 'rgba(255, 255, 255, 0.1)',
+    shadow: 'rgba(0, 0, 0, 0.3)',
   },
   // Accents
   accent: {
-    warm: '#d4a574',
-    warmLight: '#e8c9a0',
-    calm: '#7eb8c9',
-    calmLight: '#a8d4e0',
+    primary: '#64ffda',    // seafoam
+    secondary: '#ff8a80',  // coral
+    primaryMuted: 'rgba(100, 255, 218, 0.3)',
   },
   // Text
   text: {
-    primary: '#f5f2eb',
-    secondary: '#a8b5a0',
-    muted: '#6b7a65',
+    primary: '#ffffff',
+    secondary: '#94a3b8',
+    muted: '#64748b',
+  },
+  // Floating orbs
+  orbs: {
+    teal: 'rgba(100, 255, 218, 0.3)',
+    purple: 'rgba(139, 92, 246, 0.3)',
+    pink: 'rgba(244, 114, 182, 0.25)',
   },
   // Semantic
-  success: '#7cb87c',
-  error: '#c97e7e',
+  success: '#4ade80',
+  error: '#f87171',
   // Gradients
   gradients: {
-    forest: ['#1a2e1a', '#2d4a3e', '#3e5c4e'],
-    sky: ['#2d4a3e', '#3e5c4e', '#4a7a6a'],
-    warmGlow: ['#d4a574', '#e8c9a0'],
+    ocean: ['#0a1628', '#134e5e', '#1a3a4a'],
+    seafoam: ['#64ffda', '#4fd1c5'],
+    glow: ['rgba(100, 255, 218, 0.4)', 'rgba(100, 255, 218, 0)'],
   },
 } as const;
 

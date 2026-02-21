@@ -9,6 +9,7 @@ describe('useAudio', () => {
     unloadAsync: jest.fn(),
     setIsLoopingAsync: jest.fn(),
     setVolumeAsync: jest.fn(),
+    getStatusAsync: jest.fn().mockResolvedValue({ isLoaded: true }),
   };
 
   beforeEach(() => {

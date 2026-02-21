@@ -1,13 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Platform } from 'react-native';
+import { BlurView } from 'expo-blur';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { Card } from './ui';
-import { colors, typography, spacing, borderRadius } from '../theme';
+import { Wind, Volume2, Brain, Sparkles, Eye, LucideIcon } from 'lucide-react-native';
+import { colors, typography, spacing } from '../theme';
 import { Technique } from '../types';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface TechniqueCardProps {
   technique: Technique;
@@ -15,12 +18,12 @@ interface TechniqueCardProps {
   isImplemented?: boolean;
 }
 
-const techniquePatterns: Record<string, { bg: string; pattern: string }> = {
-  breathing: { bg: '#2a4a40', pattern: '○' },
-  'audio-masking': { bg: '#2a3a4a', pattern: '∿' },
-  'mental-distraction': { bg: '#3a3a4a', pattern: '△' },
-  'muscle-relaxation': { bg: '#4a3a3a', pattern: '◇' },
-  visualization: { bg: '#3a4a3a', pattern: '☁' },
+const techniqueIcons: Record<string, LucideIcon> = {
+  breathing: Wind,
+  'audio-masking': Volume2,
+  'mental-distraction': Brain,
+  'muscle-relaxation': Sparkles,
+  visualization: Eye,
 };
 
 export function TechniqueCard({
@@ -28,28 +31,63 @@ export function TechniqueCard({
   onPress,
   isImplemented = true,
 }: TechniqueCardProps) {
-  const pattern = techniquePatterns[technique.id] || techniquePatterns.breathing;
+  const scale = useSharedValue(1);
+  const Icon = techniqueIcons[technique.id] || Wind;
 
-  return (
-    <Card
-      onPress={isImplemented ? onPress : undefined}
-      style={[styles.card, { backgroundColor: pattern.bg }]}
-      variant="elevated"
-    >
-      <View style={styles.patternContainer}>
-        <Text style={styles.pattern}>{pattern.pattern}</Text>
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    if (isImplemented) {
+      scale.value = withSpring(0.96, { damping: 15, stiffness: 300 });
+    }
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+  };
+
+  const CardContent = () => (
+    <View style={styles.content}>
+      <View style={styles.iconContainer}>
+        <Icon
+          size={32}
+          color={isImplemented ? colors.accent.primary : colors.text.muted}
+          strokeWidth={1.5}
+        />
       </View>
-      <Text style={styles.icon}>{technique.icon}</Text>
-      <Text style={styles.name}>{technique.name}</Text>
+      <Text style={[styles.name, !isImplemented && styles.mutedText]}>
+        {technique.name}
+      </Text>
       <Text style={styles.description} numberOfLines={2}>
         {technique.description}
       </Text>
       {!isImplemented && (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>Soon</Text>
+          <Text style={styles.badgeText}>Coming Soon</Text>
         </View>
       )}
-    </Card>
+    </View>
+  );
+
+  return (
+    <AnimatedPressable
+      onPress={isImplemented ? onPress : undefined}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={[styles.card, animatedStyle, !isImplemented && styles.disabled]}
+    >
+      {Platform.OS === 'web' ? (
+        <View style={styles.webBlur}>
+          <CardContent />
+        </View>
+      ) : (
+        <BlurView intensity={20} tint="dark" style={styles.blur}>
+          <CardContent />
+        </BlurView>
+      )}
+    </AnimatedPressable>
   );
 }
 
@@ -57,45 +95,66 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     margin: spacing.xs,
-    minHeight: 140,
-    position: 'relative',
+    minHeight: 160,
+    borderRadius: 24,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.glass.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 24,
+    elevation: 6,
   },
-  patternContainer: {
-    position: 'absolute',
-    top: -20,
-    right: -20,
-    opacity: 0.1,
+  disabled: {
+    opacity: 0.6,
   },
-  pattern: {
-    fontSize: 100,
-    color: colors.text.primary,
+  blur: {
+    flex: 1,
+    backgroundColor: colors.glass.surface,
   },
-  icon: {
-    fontSize: 32,
-    marginBottom: spacing.sm,
+  webBlur: {
+    flex: 1,
+    backgroundColor: colors.glass.surface,
+    backdropFilter: 'blur(20px)',
+  },
+  content: {
+    flex: 1,
+    padding: spacing.lg,
+  },
+  iconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: 'rgba(100, 255, 218, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.md,
   },
   name: {
-    ...typography.body,
-    fontWeight: '600',
+    ...typography.h3,
     color: colors.text.primary,
     marginBottom: spacing.xs,
+  },
+  mutedText: {
+    color: colors.text.muted,
   },
   description: {
     ...typography.caption,
     color: colors.text.secondary,
+    lineHeight: 20,
   },
   badge: {
     position: 'absolute',
-    top: spacing.sm,
-    right: spacing.sm,
-    backgroundColor: colors.background.surface,
+    top: spacing.md,
+    right: spacing.md,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
-    borderRadius: borderRadius.sm,
+    borderRadius: 8,
   },
   badgeText: {
-    ...typography.caption,
+    ...typography.small,
     color: colors.text.muted,
     fontWeight: '500',
   },

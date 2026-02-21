@@ -1,11 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
-import { colors, typography, spacing, borderRadius } from '../../theme';
+import { colors, typography, spacing } from '../../theme';
 
 interface Option<T> {
   label: string;
@@ -23,8 +18,6 @@ export function SegmentedControl<T extends string>({
   value,
   onChange,
 }: SegmentedControlProps<T>) {
-  const selectedIndex = options.findIndex((opt) => opt.value === value);
-
   return (
     <View style={styles.container}>
       {options.map((option, index) => {
@@ -42,6 +35,9 @@ export function SegmentedControl<T extends string>({
           >
             <Text
               style={[styles.optionText, isSelected && styles.optionTextSelected]}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
             >
               {option.label}
             </Text>
@@ -55,34 +51,35 @@ export function SegmentedControl<T extends string>({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: colors.background.surface,
-    borderRadius: borderRadius.md,
-    padding: spacing.xs,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 12,
+    padding: 4,
   },
   option: {
     flex: 1,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
     alignItems: 'center',
-    borderRadius: borderRadius.sm,
+    borderRadius: 10,
   },
   optionSelected: {
-    backgroundColor: colors.accent.warm,
+    backgroundColor: colors.accent.primary,
   },
   optionFirst: {
-    borderTopLeftRadius: borderRadius.sm,
-    borderBottomLeftRadius: borderRadius.sm,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
   },
   optionLast: {
-    borderTopRightRadius: borderRadius.sm,
-    borderBottomRightRadius: borderRadius.sm,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
   },
   optionText: {
-    ...typography.bodySmall,
+    ...typography.caption,
     color: colors.text.secondary,
     fontWeight: '500',
   },
   optionTextSelected: {
-    color: colors.background.primary,
+    color: colors.background.start,
+    fontWeight: '600',
   },
 });

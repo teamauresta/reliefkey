@@ -11,7 +11,7 @@ export const TECHNIQUES: Technique[] = [
   {
     id: 'audio-masking',
     name: 'Audio Masking',
-    description: 'White noise, rain, or water sounds',
+    description: 'Ambient sounds for focus and calm',
     icon: '🔊',
     durationSeconds: null,
   },

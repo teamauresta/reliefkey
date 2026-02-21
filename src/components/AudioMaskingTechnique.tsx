@@ -4,8 +4,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAudio, SoundType } from '../hooks/useAudio';
+import { GradientBackground, FloatingOrbs, GlassCard, TechniqueHeader } from './ui';
+import { colors, spacing, typography } from '../theme';
 
 interface AudioMaskingTechniqueProps {
   onClose: () => void;
@@ -13,8 +17,14 @@ interface AudioMaskingTechniqueProps {
 
 const SOUNDS: { id: SoundType; label: string; icon: string }[] = [
   { id: 'white-noise', label: 'White Noise', icon: '📻' },
-  { id: 'rain', label: 'Rain', icon: '🌧️' },
-  { id: 'water', label: 'Running Water', icon: '💧' },
+  { id: 'sea-wave', label: 'Ocean Waves', icon: '🌊' },
+  { id: 'thunderstorm-jungle', label: 'Thunderstorm', icon: '⛈️' },
+  { id: 'european-forest', label: 'European Forest', icon: '🌲' },
+  { id: 'forest-bird', label: 'Forest Birds', icon: '🐦' },
+  { id: 'night-forest', label: 'Night Forest', icon: '🌙' },
+  { id: 'summer-night', label: 'Summer Night', icon: '🦗' },
+  { id: 'wind-blowing', label: 'Wind Blowing', icon: '💨' },
+  { id: 'wind-hum', label: 'Wind Hum', icon: '🍃' },
 ];
 
 export function AudioMaskingTechnique({ onClose }: AudioMaskingTechniqueProps) {
@@ -29,117 +39,118 @@ export function AudioMaskingTechnique({ onClose }: AudioMaskingTechniqueProps) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={onClose}
-        testID="close-button"
-      >
-        <Text style={styles.closeButtonText}>✕</Text>
-      </TouchableOpacity>
+    <GradientBackground>
+      <FloatingOrbs />
+      <SafeAreaView style={styles.container}>
+        <TechniqueHeader title="Audio Masking" onClose={onClose} />
 
-      <Text style={styles.title}>Audio Masking</Text>
-      <Text style={styles.subtitle}>
-        Choose a sound to mask background noise
-      </Text>
+        <Text style={styles.subtitle}>
+          Choose a sound to mask background noise
+        </Text>
 
-      <View style={styles.soundsContainer}>
-        {SOUNDS.map((sound) => (
-          <TouchableOpacity
-            key={sound.id}
-            style={[
-              styles.soundButton,
-              currentSound === sound.id && styles.soundButtonActive,
-            ]}
-            onPress={() => handleSoundPress(sound.id)}
-          >
-            <Text style={styles.soundIcon}>{sound.icon}</Text>
-            <Text style={styles.soundLabel}>{sound.label}</Text>
-            {currentSound === sound.id && isPlaying && (
-              <Text style={styles.playingIndicator}>▶️ Playing</Text>
-            )}
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.soundsContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          {SOUNDS.map((sound) => (
+            <GlassCard
+              key={sound.id}
+              onPress={() => handleSoundPress(sound.id)}
+              style={[
+                styles.soundButton,
+                currentSound === sound.id && isPlaying && styles.soundButtonActive,
+              ]}
+              intensity="low"
+            >
+              <View style={styles.soundContent}>
+                <Text style={styles.soundIcon}>{sound.icon}</Text>
+                <Text style={styles.soundLabel}>{sound.label}</Text>
+                {currentSound === sound.id && isPlaying && (
+                  <View style={styles.playingBadge}>
+                    <Text style={styles.playingIndicator}>Playing</Text>
+                  </View>
+                )}
+              </View>
+            </GlassCard>
+          ))}
+        </ScrollView>
+
+        {isPlaying && (
+          <TouchableOpacity style={styles.stopButton} onPress={stop}>
+            <Text style={styles.stopButtonText}>Stop Sound</Text>
           </TouchableOpacity>
-        ))}
-      </View>
-
-      {isPlaying && (
-        <TouchableOpacity style={styles.stopButton} onPress={stop}>
-          <Text style={styles.stopButtonText}>Stop</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+        )}
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#1a1a2e',
-    alignItems: 'center',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    padding: 10,
-  },
-  closeButtonText: {
-    color: '#fff',
-    fontSize: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 80,
-    marginBottom: 10,
+    paddingHorizontal: spacing.lg,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#aaa',
-    marginBottom: 40,
+    ...typography.body,
+    color: colors.text.secondary,
     textAlign: 'center',
+    marginBottom: spacing.lg,
+  },
+  scrollView: {
+    flex: 1,
   },
   soundsContainer: {
-    width: '100%',
+    paddingBottom: 120,
   },
   soundButton: {
-    backgroundColor: '#2a2a4e',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: spacing.md,
   },
   soundButtonActive: {
-    backgroundColor: '#3a3a6e',
     borderWidth: 2,
-    borderColor: '#7cd1f7',
+    borderColor: colors.accent.primary,
+  },
+  soundContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: spacing.md,
   },
   soundIcon: {
     fontSize: 32,
-    marginRight: 15,
+    marginRight: spacing.md,
   },
   soundLabel: {
-    fontSize: 18,
-    color: '#fff',
+    ...typography.body,
+    color: colors.text.primary,
     flex: 1,
+    fontWeight: '600',
+  },
+  playingBadge: {
+    backgroundColor: colors.accent.primaryMuted,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: 12,
   },
   playingIndicator: {
-    fontSize: 14,
-    color: '#7cd1f7',
+    fontSize: 12,
+    color: colors.accent.primary,
+    fontWeight: '600',
   },
   stopButton: {
-    backgroundColor: '#f44336',
-    paddingHorizontal: 60,
-    paddingVertical: 20,
-    borderRadius: 40,
-    marginTop: 30,
+    position: 'absolute',
+    bottom: spacing.xl,
+    left: spacing.xl,
+    right: spacing.xl,
+    backgroundColor: colors.glass.surface,
+    borderWidth: 1,
+    borderColor: colors.accent.primary,
+    paddingVertical: spacing.md,
+    borderRadius: 30,
+    alignItems: 'center',
   },
   stopButtonText: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
+    color: colors.accent.primary,
+    fontSize: 18,
+    fontWeight: '600',
   },
 });

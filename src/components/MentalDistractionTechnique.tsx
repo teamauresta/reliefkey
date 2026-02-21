@@ -5,7 +5,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { generateMathProblem, checkAnswer, MathProblem } from '../utils/mathProblems';
+import { GradientBackground, FloatingOrbs, GlassCard, TechniqueHeader } from './ui';
+import { colors, spacing, typography } from '../theme';
 
 interface MentalDistractionTechniqueProps {
   onClose: () => void;
@@ -49,143 +52,171 @@ export function MentalDistractionTechnique({ onClose }: MentalDistractionTechniq
   }, []);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={onClose}
-        testID="close-button"
-      >
-        <Text style={styles.closeButtonText}>✕</Text>
-      </TouchableOpacity>
+    <GradientBackground>
+      <FloatingOrbs />
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <TechniqueHeader
+          title="Mental Distraction"
+          onClose={onClose}
+          rightElement={
+            <View style={styles.scoreBadge}>
+              <Text style={styles.scoreLabel}>Score</Text>
+              <Text style={styles.scoreValue}>{score}</Text>
+            </View>
+          }
+        />
 
-      <Text style={styles.title}>Mental Distraction</Text>
-      <Text style={styles.score}>Score: {score}</Text>
+        <View style={styles.content}>
+          <GlassCard
+            style={[
+              styles.problemContainer,
+              feedback === 'correct' && styles.correctFeedback,
+              feedback === 'wrong' && styles.wrongFeedback,
+            ]}
+            intensity="medium"
+          >
+            <Text style={styles.question} testID="math-question">
+              {problem.question} = ?
+            </Text>
+            <Text style={styles.answer}>
+              {userInput || '_'}
+            </Text>
+          </GlassCard>
 
-      <View style={[
-        styles.problemContainer,
-        feedback === 'correct' && styles.correctFeedback,
-        feedback === 'wrong' && styles.wrongFeedback,
-      ]}>
-        <Text style={styles.question} testID="math-question">
-          {problem.question} = ?
-        </Text>
-        <Text style={styles.answer}>
-          {userInput || '_'}
-        </Text>
-      </View>
-
-      <View style={styles.numpad}>
-        {[['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9'], ['C', '0', '⌫']].map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.numpadRow}>
-            {row.map((key) => (
-              <TouchableOpacity
-                key={key}
-                style={styles.numpadButton}
-                onPress={() => {
-                  if (key === 'C') handleClear();
-                  else if (key === '⌫') handleBackspace();
-                  else handleNumberPress(key);
-                }}
-              >
-                <Text style={styles.numpadButtonText}>{key}</Text>
-              </TouchableOpacity>
+          <View style={styles.numpad}>
+            {[['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9'], ['C', '0', '⌫']].map((row, rowIndex) => (
+              <View key={rowIndex} style={styles.numpadRow}>
+                {row.map((key) => (
+                  <TouchableOpacity
+                    key={key}
+                    style={[
+                      styles.numpadButton,
+                      key === 'C' && styles.clearButton,
+                      key === '⌫' && styles.backspaceButton,
+                    ]}
+                    onPress={() => {
+                      if (key === 'C') handleClear();
+                      else if (key === '⌫') handleBackspace();
+                      else handleNumberPress(key);
+                    }}
+                  >
+                    <Text style={[
+                      styles.numpadButtonText,
+                      (key === 'C' || key === '⌫') && styles.actionButtonText,
+                    ]}>
+                      {key}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             ))}
           </View>
-        ))}
-      </View>
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#1a1a2e',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: 100,
     alignItems: 'center',
   },
-  closeButton: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    padding: 10,
+  scoreBadge: {
+    backgroundColor: colors.accent.primaryMuted,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
-  closeButtonText: {
-    color: '#fff',
-    fontSize: 24,
+  scoreLabel: {
+    ...typography.caption,
+    color: colors.text.secondary,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 80,
-  },
-  score: {
-    fontSize: 18,
-    color: '#7cd1f7',
-    marginTop: 10,
-    marginBottom: 30,
+  scoreValue: {
+    ...typography.h2,
+    color: colors.accent.primary,
   },
   problemContainer: {
-    backgroundColor: '#2a2a4e',
-    padding: 30,
-    borderRadius: 16,
+    padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: 30,
-    minWidth: 250,
+    marginBottom: spacing.md,
+    minWidth: 280,
   },
   correctFeedback: {
-    backgroundColor: '#2e5a2e',
+    borderWidth: 2,
+    borderColor: colors.success,
   },
   wrongFeedback: {
-    backgroundColor: '#5a2e2e',
+    borderWidth: 2,
+    borderColor: colors.error,
   },
   question: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#fff',
+    color: colors.text.primary,
   },
   answer: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#7cd1f7',
-    marginTop: 15,
+    color: colors.accent.primary,
+    marginTop: spacing.sm,
     minWidth: 100,
     textAlign: 'center',
   },
   numpad: {
-    marginBottom: 20,
+    marginBottom: spacing.sm,
   },
   numpadRow: {
     flexDirection: 'row',
   },
   numpadButton: {
-    width: 70,
-    height: 70,
-    backgroundColor: '#3a3a5e',
-    borderRadius: 35,
-    margin: 8,
+    width: 68,
+    height: 68,
+    backgroundColor: colors.glass.surface,
+    borderRadius: 34,
+    margin: 6,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.glass.border,
+  },
+  clearButton: {
+    backgroundColor: 'rgba(248, 113, 113, 0.2)',
+    borderColor: colors.error,
+  },
+  backspaceButton: {
+    backgroundColor: 'rgba(148, 163, 184, 0.2)',
+    borderColor: colors.text.secondary,
   },
   numpadButtonText: {
     fontSize: 28,
-    color: '#fff',
+    color: colors.text.primary,
     fontWeight: 'bold',
   },
+  actionButtonText: {
+    fontSize: 22,
+  },
   submitButton: {
-    backgroundColor: '#4CAF50',
-    paddingHorizontal: 60,
-    paddingVertical: 16,
+    backgroundColor: colors.success,
+    paddingHorizontal: 80,
+    paddingVertical: spacing.md,
     borderRadius: 30,
   },
   submitButtonText: {
-    color: '#fff',
-    fontSize: 20,
+    color: colors.text.primary,
+    fontSize: 22,
     fontWeight: 'bold',
   },
 });

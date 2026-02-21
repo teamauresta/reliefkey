@@ -30,8 +30,8 @@ export function SettingRow({
           value={value}
           onValueChange={onToggle}
           trackColor={{
-            false: colors.background.surfaceSolid,
-            true: colors.accent.warm,
+            false: 'rgba(255, 255, 255, 0.1)',
+            true: colors.accent.primary,
           }}
           thumbColor={colors.text.primary}
         />
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: spacing.md,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.background.surface,
+    borderBottomColor: colors.glass.border,
   },
   pressable: {
     opacity: 1,

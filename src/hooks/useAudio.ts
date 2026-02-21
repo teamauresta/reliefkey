@@ -1,13 +1,27 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Audio, AVPlaybackSource } from 'expo-av';
 
-export type SoundType = 'white-noise' | 'rain' | 'water';
+export type SoundType =
+  | 'white-noise'
+  | 'sea-wave'
+  | 'thunderstorm-jungle'
+  | 'european-forest'
+  | 'forest-bird'
+  | 'night-forest'
+  | 'summer-night'
+  | 'wind-blowing'
+  | 'wind-hum';
 
-// Placeholder audio sources - in production, these would be actual audio files
 const SOUND_SOURCES: Record<SoundType, AVPlaybackSource> = {
-  'white-noise': require('../../assets/audio/white-noise.mp3'),
-  'rain': require('../../assets/audio/rain.mp3'),
-  'water': require('../../assets/audio/water.mp3'),
+  'white-noise': require('../../assets/audio/white-noise.wav'),
+  'sea-wave': require('../../assets/audio/sea-wave.wav'),
+  'thunderstorm-jungle': require('../../assets/audio/thunderstorm-jungle.wav'),
+  'european-forest': require('../../assets/audio/european-forest.wav'),
+  'forest-bird': require('../../assets/audio/forest-bird.wav'),
+  'night-forest': require('../../assets/audio/night-forest.wav'),
+  'summer-night': require('../../assets/audio/summer-night.wav'),
+  'wind-blowing': require('../../assets/audio/wind-blowing.wav'),
+  'wind-hum': require('../../assets/audio/wind-hum.wav'),
 };
 
 interface UseAudioReturn {
@@ -34,7 +48,13 @@ export function useAudio(): UseAudioReturn {
 
     return () => {
       if (soundRef.current) {
-        soundRef.current.unloadAsync();
+        soundRef.current.getStatusAsync().then((status) => {
+          if (status.isLoaded) {
+            soundRef.current?.unloadAsync();
+          }
+        }).catch(() => {
+          // Silently ignore
+        });
       }
     };
   }, []);
@@ -64,14 +84,17 @@ export function useAudio(): UseAudioReturn {
   const stop = useCallback(async () => {
     try {
       if (soundRef.current) {
-        await soundRef.current.stopAsync();
-        await soundRef.current.unloadAsync();
+        const status = await soundRef.current.getStatusAsync();
+        if (status.isLoaded) {
+          await soundRef.current.stopAsync();
+          await soundRef.current.unloadAsync();
+        }
         soundRef.current = null;
       }
       setIsPlaying(false);
       setCurrentSound(null);
     } catch (error) {
-      console.error('Failed to stop audio:', error);
+      // Silently ignore - sound may already be unloaded
     }
   }, []);
 

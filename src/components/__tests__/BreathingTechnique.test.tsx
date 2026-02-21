@@ -17,11 +17,11 @@ describe('BreathingTechnique', () => {
     expect(screen.getByText('Stop')).toBeTruthy();
   });
 
-  it('calls onClose when close button pressed', () => {
+  it('calls onClose when back button pressed', () => {
     const onClose = jest.fn();
     render(<BreathingTechnique hapticEnabled={true} onClose={onClose} />);
 
-    fireEvent.press(screen.getByTestId('close-button'));
+    fireEvent.press(screen.getByTestId('back-button'));
 
     expect(onClose).toHaveBeenCalled();
   });

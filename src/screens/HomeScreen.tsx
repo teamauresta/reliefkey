@@ -7,14 +7,15 @@ import {
   ScrollView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { GradientBackground } from '../components/ui';
+import { GradientBackground, FloatingOrbs } from '../components/ui';
 import { TechniqueCard } from '../components/TechniqueCard';
 import { QuickStartButton } from '../components/QuickStartButton';
 import { BreathingTechnique } from '../components/BreathingTechnique';
 import { AudioMaskingTechnique } from '../components/AudioMaskingTechnique';
 import { MentalDistractionTechnique } from '../components/MentalDistractionTechnique';
+import { MuscleRelaxationTechnique } from '../components/MuscleRelaxationTechnique';
+import { VisualizationTechnique } from '../components/VisualizationTechnique';
 import { usePreferences } from '../hooks/usePreferences';
-import { useGreeting } from '../hooks/useGreeting';
 import { TechniqueId } from '../types';
 import { TECHNIQUES } from '../constants';
 import { colors, typography, spacing } from '../theme';
@@ -23,11 +24,12 @@ const IMPLEMENTED_TECHNIQUES: TechniqueId[] = [
   'breathing',
   'audio-masking',
   'mental-distraction',
+  'muscle-relaxation',
+  'visualization',
 ];
 
 export function HomeScreen() {
   const { preferences } = usePreferences();
-  const greeting = useGreeting();
   const [activeTechnique, setActiveTechnique] = useState<TechniqueId | null>(null);
 
   const handleQuickStart = () => {
@@ -58,6 +60,20 @@ export function HomeScreen() {
         return <AudioMaskingTechnique onClose={handleClose} />;
       case 'mental-distraction':
         return <MentalDistractionTechnique onClose={handleClose} />;
+      case 'muscle-relaxation':
+        return (
+          <MuscleRelaxationTechnique
+            hapticEnabled={preferences.hapticEnabled}
+            onClose={handleClose}
+          />
+        );
+      case 'visualization':
+        return (
+          <VisualizationTechnique
+            hapticEnabled={preferences.hapticEnabled}
+            onClose={handleClose}
+          />
+        );
       default:
         return null;
     }
@@ -69,13 +85,11 @@ export function HomeScreen() {
 
   return (
     <GradientBackground>
+      <FloatingOrbs />
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" />
 
         <View style={styles.header}>
-          <Text style={styles.greeting}>
-            {greeting.emoji} {greeting.text}
-          </Text>
           <Text style={styles.title}>ReliefKey</Text>
           <Text style={styles.subtitle}>Find your calm</Text>
         </View>
@@ -90,9 +104,9 @@ export function HomeScreen() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.sectionTitle}>All Techniques</Text>
+          <Text style={styles.sectionTitle}>Techniques</Text>
           <View style={styles.grid}>
-            {TECHNIQUES.map((technique, index) => (
+            {TECHNIQUES.map((technique) => (
               <View key={technique.id} style={styles.gridItem}>
                 <TechniqueCard
                   technique={technique}
@@ -114,32 +128,30 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.xl,
     paddingBottom: spacing.md,
-  },
-  greeting: {
-    ...typography.bodySmall,
-    color: colors.text.secondary,
-    marginBottom: spacing.xs,
+    alignItems: 'center',
   },
   title: {
-    ...typography.h1,
+    ...typography.hero,
     color: colors.text.primary,
+    textAlign: 'center',
   },
   subtitle: {
     ...typography.body,
     color: colors.text.secondary,
     marginTop: spacing.xs,
+    textAlign: 'center',
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
     paddingHorizontal: spacing.md,
-    paddingBottom: spacing.xxl,
+    paddingBottom: 120,
   },
   sectionTitle: {
-    ...typography.h3,
+    ...typography.h2,
     color: colors.text.primary,
     marginBottom: spacing.md,
     marginLeft: spacing.sm,
