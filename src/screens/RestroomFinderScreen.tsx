@@ -20,6 +20,7 @@ import Animated, {
   SlideInDown,
   SlideOutDown,
 } from 'react-native-reanimated';
+import { Accessibility, DoorOpen, MapPin, Crosshair, RefreshCw, X } from 'lucide-react-native';
 import { GradientBackground, FloatingOrbs } from '../components/ui';
 import { useRestrooms } from '../hooks/useRestrooms';
 import { Restroom } from '../types/restroom';
@@ -48,10 +49,12 @@ function formatDistance(meters?: number): string {
 
 function FilterChip({
   label,
+  icon: IconComponent,
   active,
   onPress,
 }: {
   label: string;
+  icon: React.ComponentType<{ size: number; color: string; strokeWidth?: number }>;
   active: boolean;
   onPress: () => void;
 }) {
@@ -68,6 +71,11 @@ function FilterChip({
       style={animatedStyle}
     >
       <View style={[styles.chip, active && styles.chipActive]}>
+        <IconComponent
+          size={16}
+          color={active ? '#0a1628' : colors.text.primary}
+          strokeWidth={1.5}
+        />
         <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
       </View>
     </AnimatedPressable>
@@ -116,7 +124,7 @@ function SheetContent({
       <View style={styles.sheetHandle} />
 
       <Pressable onPress={onClose} style={styles.closeButton}>
-        <Text style={styles.closeText}>✕</Text>
+        <X size={16} color={colors.text.secondary} strokeWidth={2} />
       </Pressable>
 
       <Text style={styles.sheetName}>{restroom.name}</Text>
@@ -237,7 +245,7 @@ export function RestroomFinderScreen() {
       <GradientBackground>
         <FloatingOrbs />
         <View style={styles.centered}>
-          <Text style={styles.errorEmoji}>📍</Text>
+          <MapPin size={48} color={colors.accent.primary} strokeWidth={1.5} />
           <Text style={styles.errorTitle}>Location Required</Text>
           <Text style={styles.errorText}>{error}</Text>
           <Pressable onPress={refresh} style={styles.retryButton}>
@@ -317,11 +325,11 @@ export function RestroomFinderScreen() {
       <Pressable onPress={handleRecenter} style={styles.fab}>
         {Platform.OS === 'web' ? (
           <View style={styles.fabWebBlur}>
-            <Text style={styles.fabIcon}>◎</Text>
+            <Crosshair size={22} color={colors.accent.primary} strokeWidth={1.5} />
           </View>
         ) : (
           <BlurView intensity={40} tint="dark" style={styles.fabBlur}>
-            <Text style={styles.fabIcon}>◎</Text>
+            <Crosshair size={22} color={colors.accent.primary} strokeWidth={1.5} />
           </BlurView>
         )}
       </Pressable>
@@ -330,11 +338,11 @@ export function RestroomFinderScreen() {
       <Pressable onPress={refresh} style={styles.refreshFab}>
         {Platform.OS === 'web' ? (
           <View style={styles.fabWebBlur}>
-            <Text style={styles.fabIcon}>↻</Text>
+            <RefreshCw size={22} color={colors.accent.primary} strokeWidth={1.5} />
           </View>
         ) : (
           <BlurView intensity={40} tint="dark" style={styles.fabBlur}>
-            <Text style={styles.fabIcon}>↻</Text>
+            <RefreshCw size={22} color={colors.accent.primary} strokeWidth={1.5} />
           </BlurView>
         )}
       </Pressable>
@@ -370,12 +378,14 @@ function FilterBarContent({
         contentContainerStyle={styles.chipRow}
       >
         <FilterChip
-          label="♿ Accessible"
+          label="Accessible"
+          icon={Accessibility}
           active={filters.accessible}
           onPress={() => toggleFilter('accessible')}
         />
         <FilterChip
-          label="🚻 Single-stall"
+          label="Single-stall"
+          icon={DoorOpen}
           active={filters.unisex}
           onPress={() => toggleFilter('unisex')}
         />
@@ -403,8 +413,7 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     marginTop: spacing.md,
   },
-  errorEmoji: {
-    fontSize: 48,
+  errorIcon: {
     marginBottom: spacing.md,
   },
   errorTitle: {
@@ -471,6 +480,9 @@ const styles = StyleSheet.create({
 
   // Filter chips
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs + 2,
     borderRadius: borderRadius.full,
@@ -535,10 +547,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  fabIcon: {
-    fontSize: 22,
-    color: colors.accent.primary,
-  },
 
   // Detail sheet
   sheetContainer: {
@@ -584,10 +592,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.glass.surface,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  closeText: {
-    color: colors.text.secondary,
-    fontSize: 16,
   },
   sheetName: {
     ...typography.h3,

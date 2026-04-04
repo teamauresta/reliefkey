@@ -9,10 +9,18 @@ import {
   Pressable,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { ChevronRight, Check } from 'lucide-react-native';
+import { ChevronRight, Check, Wind, Volume2, BrainCircuit, PersonStanding, Mountain, LucideIcon } from 'lucide-react-native';
 import { GradientBackground, FloatingOrbs, GlassCard, SettingRow, SegmentedControl } from '../components/ui';
 import { usePreferences } from '../hooks/usePreferences';
 import { colors, typography, spacing } from '../theme';
+
+const techniqueIcons: Record<string, LucideIcon> = {
+  breathing: Wind,
+  'audio-masking': Volume2,
+  'mental-distraction': BrainCircuit,
+  'muscle-relaxation': PersonStanding,
+  visualization: Mountain,
+};
 import { TECHNIQUES } from '../constants';
 import { AnimationIntensity, SoundType, TechniqueId } from '../types';
 
@@ -176,7 +184,11 @@ export function SettingsScreen() {
                   style={styles.techniqueOption}
                   onPress={() => handleTechniqueSelect(technique.id)}
                 >
-                  <Text style={styles.techniqueIcon}>{technique.icon}</Text>
+                  {React.createElement(techniqueIcons[technique.id] || Wind, {
+                    size: 20,
+                    color: colors.accent.primary,
+                    strokeWidth: 1.5,
+                  })}
                   <View style={styles.techniqueInfo}>
                     <Text style={styles.techniqueName}>{technique.name}</Text>
                     <Text style={styles.techniqueDesc}>{technique.description}</Text>

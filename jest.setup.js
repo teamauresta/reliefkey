@@ -58,24 +58,39 @@ jest.mock('lucide-react-native', () => {
   const React = require('react');
   const createMockIcon = () => (props) => React.createElement('View', props);
   return {
+    // Technique icons
     Wind: createMockIcon(),
     Volume2: createMockIcon(),
-    Brain: createMockIcon(),
-    Sparkles: createMockIcon(),
-    Eye: createMockIcon(),
+    BrainCircuit: createMockIcon(),
+    PersonStanding: createMockIcon(),
+    Mountain: createMockIcon(),
+    // Navigation
     Home: createMockIcon(),
-    BarChart3: createMockIcon(),
+    TrendingUp: createMockIcon(),
     Settings: createMockIcon(),
-    Play: createMockIcon(),
-    Pause: createMockIcon(),
+    MapPin: createMockIcon(),
+    // Restroom finder
+    Accessibility: createMockIcon(),
+    DoorOpen: createMockIcon(),
+    Crosshair: createMockIcon(),
+    RefreshCw: createMockIcon(),
+    // UI elements
     X: createMockIcon(),
     ChevronRight: createMockIcon(),
+    ChevronDown: createMockIcon(),
     Check: createMockIcon(),
+    VolumeX: createMockIcon(),
+    Play: createMockIcon(),
+    Pause: createMockIcon(),
     Moon: createMockIcon(),
     Sun: createMockIcon(),
     Bell: createMockIcon(),
     Clock: createMockIcon(),
-    MapPin: createMockIcon(),
+    // Legacy (kept for compatibility)
+    Brain: createMockIcon(),
+    Sparkles: createMockIcon(),
+    Eye: createMockIcon(),
+    BarChart3: createMockIcon(),
     LucideIcon: () => null,
   };
 });

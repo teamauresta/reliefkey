@@ -9,7 +9,7 @@ export interface Technique {
   id: TechniqueId;
   name: string;
   description: string;
-  icon: string;
+  iconName: string;
   durationSeconds: number | null; // null = user-controlled
 }
 

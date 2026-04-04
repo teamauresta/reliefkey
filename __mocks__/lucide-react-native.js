@@ -11,13 +11,30 @@ function createIcon(name) {
 }
 
 module.exports = {
+  // Navigation
+  Home: createIcon('Home'),
+  MapPin: createIcon('MapPin'),
+  TrendingUp: createIcon('TrendingUp'),
+  Settings: createIcon('Settings'),
+
+  // Technique icons
+  Wind: createIcon('Wind'),
+  Volume2: createIcon('Volume2'),
+  BrainCircuit: createIcon('BrainCircuit'),
+  PersonStanding: createIcon('PersonStanding'),
+  Mountain: createIcon('Mountain'),
+
+  // Restroom finder
+  Accessibility: createIcon('Accessibility'),
+  DoorOpen: createIcon('DoorOpen'),
+  Crosshair: createIcon('Crosshair'),
+  RefreshCw: createIcon('RefreshCw'),
+  X: createIcon('X'),
+
+  // UI elements
   ChevronDown: createIcon('ChevronDown'),
   ChevronRight: createIcon('ChevronRight'),
-  X: createIcon('X'),
   Check: createIcon('Check'),
-  Volume2: createIcon('Volume2'),
   VolumeX: createIcon('VolumeX'),
-  Home: createIcon('Home'),
-  Settings: createIcon('Settings'),
   BarChart3: createIcon('BarChart3'),
 };

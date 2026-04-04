@@ -6,7 +6,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { Wind, Volume2, Brain, Sparkles, Eye, LucideIcon } from 'lucide-react-native';
+import { Wind, Volume2, BrainCircuit, PersonStanding, Mountain, LucideIcon } from 'lucide-react-native';
 import { colors, typography, spacing } from '../theme';
 import { Technique } from '../types';
 
@@ -21,9 +21,9 @@ interface TechniqueCardProps {
 const techniqueIcons: Record<string, LucideIcon> = {
   breathing: Wind,
   'audio-masking': Volume2,
-  'mental-distraction': Brain,
-  'muscle-relaxation': Sparkles,
-  visualization: Eye,
+  'mental-distraction': BrainCircuit,
+  'muscle-relaxation': PersonStanding,
+  visualization: Mountain,
 };
 
 export function TechniqueCard({
@@ -52,7 +52,7 @@ export function TechniqueCard({
     <View style={styles.content}>
       <View style={styles.iconContainer}>
         <Icon
-          size={32}
+          size={28}
           color={isImplemented ? colors.accent.primary : colors.text.muted}
           strokeWidth={1.5}
         />

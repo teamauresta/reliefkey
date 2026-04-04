@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Platform, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
-import { Home, MapPin, BarChart3, Settings } from 'lucide-react-native';
+import { Home, MapPin, TrendingUp, Settings } from 'lucide-react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RestroomFinderScreen } from '../screens/RestroomFinderScreen';
 import { ProgressScreen } from '../screens/ProgressScreen';
@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 const icons = {
   Home,
   Find: MapPin,
-  Progress: BarChart3,
+  Progress: TrendingUp,
   Settings,
 };
 
