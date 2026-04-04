@@ -9,7 +9,7 @@ import {
   Pressable,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { ChevronRight, Check, Wind, Volume2, BrainCircuit, PersonStanding, Mountain, LucideIcon } from 'lucide-react-native';
+import { ChevronRight, Check, Wind, Volume2, BrainCircuit, PersonStanding, Mountain, Radio, Waves, TreePine, Moon, LucideIcon } from 'lucide-react-native';
 import { GradientBackground, FloatingOrbs, GlassCard, SettingRow, SegmentedControl } from '../components/ui';
 import { usePreferences } from '../hooks/usePreferences';
 import { colors, typography, spacing } from '../theme';
@@ -30,11 +30,11 @@ const ANIMATION_OPTIONS = [
   { label: 'Minimal', value: 'minimal' as AnimationIntensity },
 ];
 
-const SOUND_OPTIONS: { label: string; value: SoundType; icon: string }[] = [
-  { label: 'White Noise', value: 'white-noise', icon: '📻' },
-  { label: 'Ocean', value: 'sea-wave', icon: '🌊' },
-  { label: 'Forest', value: 'european-forest', icon: '🌲' },
-  { label: 'Night', value: 'night-forest', icon: '🌙' },
+const SOUND_OPTIONS: { label: string; value: SoundType; iconName: LucideIcon }[] = [
+  { label: 'White Noise', value: 'white-noise', iconName: Radio },
+  { label: 'Ocean', value: 'sea-wave', iconName: Waves },
+  { label: 'Forest', value: 'european-forest', iconName: TreePine },
+  { label: 'Night', value: 'night-forest', iconName: Moon },
 ];
 
 export function SettingsScreen() {
@@ -110,7 +110,11 @@ export function SettingsScreen() {
                       ]}
                       onPress={() => handleSoundChange(option.value)}
                     >
-                      <Text style={styles.soundIcon}>{option.icon}</Text>
+                      <option.iconName
+                        size={28}
+                        color={isSelected ? colors.accent.primary : colors.text.secondary}
+                        strokeWidth={1.5}
+                      />
                       <Text
                         style={[
                           styles.soundLabel,
@@ -276,7 +280,6 @@ const styles = StyleSheet.create({
     borderColor: colors.accent.primary,
   },
   soundIcon: {
-    fontSize: 28,
     marginBottom: spacing.xs,
   },
   soundLabel: {
