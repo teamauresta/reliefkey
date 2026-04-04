@@ -18,7 +18,7 @@ export const VISUALIZATION_SCENES: VisualizationScene[] = [
   {
     id: 'beach',
     name: 'Beach',
-    icon: '🏖️',
+    icon: 'Sun',
     description: 'Warm sand and gentle waves',
     gradientColors: ['#0a1628', '#1e4a5c', '#2d6a7a'],
     particleColor: 'rgba(135, 206, 235, 0.6)',
@@ -59,7 +59,7 @@ export const VISUALIZATION_SCENES: VisualizationScene[] = [
   {
     id: 'forest',
     name: 'Forest',
-    icon: '🌲',
+    icon: 'TreePine',
     description: 'Peaceful woodland path',
     gradientColors: ['#0a1a0a', '#1a3a2a', '#2a4a3a'],
     particleColor: 'rgba(144, 238, 144, 0.5)',
@@ -100,7 +100,7 @@ export const VISUALIZATION_SCENES: VisualizationScene[] = [
   {
     id: 'mountains',
     name: 'Mountains',
-    icon: '🏔️',
+    icon: 'Mountain',
     description: 'Crisp alpine serenity',
     gradientColors: ['#1a1a2e', '#2a3a5e', '#4a5a7e'],
     particleColor: 'rgba(255, 255, 255, 0.4)',
@@ -141,7 +141,7 @@ export const VISUALIZATION_SCENES: VisualizationScene[] = [
   {
     id: 'night-sky',
     name: 'Night Sky',
-    icon: '🌌',
+    icon: 'Star',
     description: 'Infinite starlit wonder',
     gradientColors: ['#050510', '#0a0a20', '#151530'],
     particleColor: 'rgba(255, 255, 255, 0.8)',

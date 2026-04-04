@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { Check, Volume2, VolumeX } from 'lucide-react-native';
+import { Check, Volume2, VolumeX, Sun, TreePine, Mountain, Star } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { SceneParticles, TechniqueHeader } from './ui';
 import { VisualizationSelector } from './VisualizationSelector';
@@ -24,6 +24,13 @@ interface VisualizationTechniqueProps {
   onClose: () => void;
   hapticEnabled?: boolean;
 }
+
+const SCENE_ICONS: Record<string, React.ComponentType<any>> = {
+  Sun,
+  TreePine,
+  Mountain,
+  Star,
+};
 
 export function VisualizationTechnique({
   onClose,
@@ -272,7 +279,10 @@ export function VisualizationTechnique({
 
           {/* Scene icon */}
           <View style={styles.iconContainer}>
-            <Text style={styles.sceneIcon}>{selectedScene.icon}</Text>
+            {(() => {
+              const IconComponent = SCENE_ICONS[selectedScene.icon];
+              return IconComponent ? <IconComponent size={56} color={colors.accent.primary} /> : null;
+            })()}
           </View>
 
           {/* Phase name */}

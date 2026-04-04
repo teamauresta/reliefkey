@@ -74,6 +74,16 @@ jest.mock('lucide-react-native', () => {
     DoorOpen: createMockIcon(),
     Crosshair: createMockIcon(),
     RefreshCw: createMockIcon(),
+    // Audio masking
+    Radio: createMockIcon(),
+    Waves: createMockIcon(),
+    CloudLightning: createMockIcon(),
+    TreePine: createMockIcon(),
+    Bird: createMockIcon(),
+    Bug: createMockIcon(),
+    Leaf: createMockIcon(),
+    // Visualization scenes
+    Star: createMockIcon(),
     // UI elements
     X: createMockIcon(),
     ChevronRight: createMockIcon(),

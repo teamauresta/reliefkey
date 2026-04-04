@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Radio, Waves, CloudLightning, TreePine, Bird, Moon, Bug, Wind, Leaf } from 'lucide-react-native';
 import { useAudio, SoundType } from '../hooks/useAudio';
 import { GradientBackground, FloatingOrbs, GlassCard, TechniqueHeader } from './ui';
 import { colors, spacing, typography } from '../theme';
@@ -15,16 +16,16 @@ interface AudioMaskingTechniqueProps {
   onClose: () => void;
 }
 
-const SOUNDS: { id: SoundType; label: string; icon: string }[] = [
-  { id: 'white-noise', label: 'White Noise', icon: '📻' },
-  { id: 'sea-wave', label: 'Ocean Waves', icon: '🌊' },
-  { id: 'thunderstorm-jungle', label: 'Thunderstorm', icon: '⛈️' },
-  { id: 'european-forest', label: 'European Forest', icon: '🌲' },
-  { id: 'forest-bird', label: 'Forest Birds', icon: '🐦' },
-  { id: 'night-forest', label: 'Night Forest', icon: '🌙' },
-  { id: 'summer-night', label: 'Summer Night', icon: '🦗' },
-  { id: 'wind-blowing', label: 'Wind Blowing', icon: '💨' },
-  { id: 'wind-hum', label: 'Wind Hum', icon: '🍃' },
+const SOUNDS: { id: SoundType; label: string; Icon: React.ComponentType<any> }[] = [
+  { id: 'white-noise', label: 'White Noise', Icon: Radio },
+  { id: 'sea-wave', label: 'Ocean Waves', Icon: Waves },
+  { id: 'thunderstorm-jungle', label: 'Thunderstorm', Icon: CloudLightning },
+  { id: 'european-forest', label: 'European Forest', Icon: TreePine },
+  { id: 'forest-bird', label: 'Forest Birds', Icon: Bird },
+  { id: 'night-forest', label: 'Night Forest', Icon: Moon },
+  { id: 'summer-night', label: 'Summer Night', Icon: Bug },
+  { id: 'wind-blowing', label: 'Wind Blowing', Icon: Wind },
+  { id: 'wind-hum', label: 'Wind Hum', Icon: Leaf },
 ];
 
 export function AudioMaskingTechnique({ onClose }: AudioMaskingTechniqueProps) {
@@ -64,7 +65,7 @@ export function AudioMaskingTechnique({ onClose }: AudioMaskingTechniqueProps) {
               intensity="low"
             >
               <View style={styles.soundContent}>
-                <Text style={styles.soundIcon}>{sound.icon}</Text>
+                {React.createElement(sound.Icon, { size: 24, color: colors.accent.primary })}
                 <Text style={styles.soundLabel}>{sound.label}</Text>
                 {currentSound === sound.id && isPlaying && (
                   <View style={styles.playingBadge}>
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   soundIcon: {
-    fontSize: 32,
     marginRight: spacing.md,
   },
   soundLabel: {

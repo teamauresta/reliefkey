@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Clock } from 'lucide-react-native';
+import { Clock, Sun, TreePine, Mountain, Star } from 'lucide-react-native';
 import { VISUALIZATION_SCENES, VisualizationScene } from '../constants/visualizationScenes';
 import { colors, typography, spacing } from '../theme';
 
@@ -9,6 +9,13 @@ interface VisualizationSelectorProps {
   onSelect: (scene: VisualizationScene) => void;
   onClose: () => void;
 }
+
+const SCENE_ICONS: Record<string, React.ComponentType<any>> = {
+  Sun,
+  TreePine,
+  Mountain,
+  Star,
+};
 
 export function VisualizationSelector({ onSelect, onClose }: VisualizationSelectorProps) {
   const getTotalDuration = (scene: VisualizationScene) => {
@@ -43,7 +50,10 @@ export function VisualizationSelector({ onSelect, onClose }: VisualizationSelect
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Text style={styles.sceneIcon}>{scene.icon}</Text>
+              {(() => {
+                const IconComponent = SCENE_ICONS[scene.icon];
+                return IconComponent ? <IconComponent size={36} color={colors.accent.primary} /> : null;
+              })()}
             </LinearGradient>
             <View style={styles.sceneInfo}>
               <Text style={styles.sceneName}>{scene.name}</Text>

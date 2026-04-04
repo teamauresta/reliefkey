@@ -31,6 +31,21 @@ module.exports = {
   RefreshCw: createIcon('RefreshCw'),
   X: createIcon('X'),
 
+  // Audio masking
+  Radio: createIcon('Radio'),
+  Waves: createIcon('Waves'),
+  CloudLightning: createIcon('CloudLightning'),
+  TreePine: createIcon('TreePine'),
+  Bird: createIcon('Bird'),
+  Moon: createIcon('Moon'),
+  Bug: createIcon('Bug'),
+  Leaf: createIcon('Leaf'),
+
+  // Visualization scenes
+  Sun: createIcon('Sun'),
+  Star: createIcon('Star'),
+  Clock: createIcon('Clock'),
+
   // UI elements
   ChevronDown: createIcon('ChevronDown'),
   ChevronRight: createIcon('ChevronRight'),
