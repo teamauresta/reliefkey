@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { BarChart3 } from 'lucide-react-native';
-import { GradientBackground, FloatingOrbs, GlassCard } from '../components/ui';
+import { ImageBackground, FloatingOrbs, GlassCard } from '../components/ui';
 import { colors, typography, spacing } from '../theme';
 
 export function ProgressScreen() {
   return (
-    <GradientBackground>
+    <ImageBackground>
       <FloatingOrbs />
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" />
@@ -31,7 +31,7 @@ export function ProgressScreen() {
           </GlassCard>
         </View>
       </SafeAreaView>
-    </GradientBackground>
+    </ImageBackground>
   );
 }
 

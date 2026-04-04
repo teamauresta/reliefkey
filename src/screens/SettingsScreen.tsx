@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronRight, Check, Wind, Volume2, BrainCircuit, PersonStanding, Mountain, Radio, Waves, TreePine, Moon, LucideIcon } from 'lucide-react-native';
-import { GradientBackground, FloatingOrbs, GlassCard, SettingRow, SegmentedControl } from '../components/ui';
+import { ImageBackground, FloatingOrbs, GlassCard, SettingRow, SegmentedControl } from '../components/ui';
 import { usePreferences } from '../hooks/usePreferences';
 import { colors, typography, spacing } from '../theme';
 
@@ -63,7 +63,7 @@ export function SettingsScreen() {
   );
 
   return (
-    <GradientBackground>
+    <ImageBackground>
       <FloatingOrbs />
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" />
@@ -212,7 +212,7 @@ export function SettingsScreen() {
           </View>
         </Modal>
       </SafeAreaView>
-    </GradientBackground>
+    </ImageBackground>
   );
 }
 
