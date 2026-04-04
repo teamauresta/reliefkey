@@ -75,6 +75,7 @@ jest.mock('lucide-react-native', () => {
     Sun: createMockIcon(),
     Bell: createMockIcon(),
     Clock: createMockIcon(),
+    MapPin: createMockIcon(),
     LucideIcon: () => null,
   };
 });
@@ -99,6 +100,49 @@ jest.mock('react-native-reanimated', () => {
     interpolateColor: () => 'transparent',
     Easing: { inOut: () => {}, ease: {} },
     createAnimatedComponent: (component) => component,
+    FadeIn: { delay: () => ({}) },
+    SlideInDown: { springify: () => ({ damping: () => ({ stiffness: () => ({}) }) }) },
+    SlideOutDown: { duration: () => ({}) },
+  };
+});
+
+// Mock expo-location
+jest.mock('expo-location', () => ({
+  requestForegroundPermissionsAsync: jest.fn(() =>
+    Promise.resolve({ status: 'granted' })
+  ),
+  getCurrentPositionAsync: jest.fn(() =>
+    Promise.resolve({
+      coords: { latitude: 37.7749, longitude: -122.4194 },
+    })
+  ),
+  Accuracy: {
+    Balanced: 3,
+    High: 4,
+    Highest: 5,
+    Low: 2,
+    Lowest: 1,
+  },
+}));
+
+// Mock react-native-maps
+jest.mock('react-native-maps', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const MockMapView = React.forwardRef((props, ref) => {
+    React.useImperativeHandle(ref, () => ({
+      animateToRegion: jest.fn(),
+    }));
+    return React.createElement(View, { testID: 'map-view', ...props }, props.children);
+  });
+  MockMapView.displayName = 'MapView';
+  const MockMarker = (props) =>
+    React.createElement(View, { testID: 'map-marker', ...props }, props.children);
+  return {
+    __esModule: true,
+    default: MockMapView,
+    Marker: MockMarker,
+    PROVIDER_GOOGLE: 'google',
   };
 });
 
