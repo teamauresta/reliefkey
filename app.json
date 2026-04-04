@@ -1,42 +1,59 @@
 {
   "expo": {
-    "name": "reliefkey",
+    "name": "ReliefKey",
     "slug": "reliefkey",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0a1628"
     },
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
+      "bundleIdentifier": "com.reliefkey.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "ReliefKey uses your location to find nearby restrooms."
+        "NSLocationWhenInUseUsageDescription": "ReliefKey uses your location to find nearby restrooms.",
+        "NSLocationAlwaysUsageDescription": "ReliefKey uses your location to find nearby restrooms."
       },
       "config": {
-        "googleMapsApiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+        "googleMapsApiKey": "AIzaSyD1BFoVYQsJ2OTxmTOz9Z5PCkkeAZ6Kn8w"
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0a1628"
       },
+      "package": "com.reliefkey.app",
+      "minSdkVersion": 21,
+      "targetSdkVersion": 34,
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
-          "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+          "apiKey": "AIzaSyD1BFoVYQsJ2OTxmTOz9Z5PCkkeAZ6Kn8w"
         }
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-video",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "ReliefKey uses your location to find nearby restrooms."
+        }
+      ]
+    ]
   }
 }
