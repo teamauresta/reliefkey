@@ -7,3 +7,4 @@ export { Button } from './Button';
 export { SettingRow } from './SettingRow';
 export { SegmentedControl } from './SegmentedControl';
 export { TechniqueHeader } from './TechniqueHeader';
+export { VideoBackground } from './VideoBackground';

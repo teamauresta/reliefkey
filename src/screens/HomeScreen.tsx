@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { GradientBackground, FloatingOrbs } from '../components/ui';
+import { VideoBackground } from '../components/ui';
 import { TechniqueCard } from '../components/TechniqueCard';
 import { QuickStartButton } from '../components/QuickStartButton';
 import { BreathingTechnique } from '../components/BreathingTechnique';
@@ -84,8 +84,7 @@ export function HomeScreen() {
   );
 
   return (
-    <GradientBackground>
-      <FloatingOrbs />
+    <VideoBackground>
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" />
 
@@ -118,7 +117,7 @@ export function HomeScreen() {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </GradientBackground>
+    </VideoBackground>
   );
 }
 

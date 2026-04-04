@@ -48,6 +48,16 @@ jest.mock('expo-linear-gradient', () => ({
   LinearGradient: ({ children }) => children,
 }));
 
+// Mock expo-video
+jest.mock('expo-video', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    useVideoPlayer: () => ({ loop: false, muted: false, play: jest.fn() }),
+    VideoView: (props) => React.createElement(View, { testID: 'video-view', ...props }),
+  };
+});
+
 // Mock expo-blur
 jest.mock('expo-blur', () => ({
   BlurView: ({ children }) => children,
