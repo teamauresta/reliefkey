@@ -45,3 +45,43 @@ export interface BreathingPattern {
   exhale: number;
   rest: number;
 }
+
+// Progress tracking
+export interface SessionRecord {
+  id: string;
+  techniqueId: TechniqueId;
+  techniqueName: string;
+  durationSeconds: number;
+  completedAt: string; // ISO date
+}
+
+export interface ProgressData {
+  currentStreak: number;
+  lastSessionDate: string | null; // ISO date
+  totalSessions: number;
+  totalMinutes: number;
+  sessions: SessionRecord[];
+}
+
+// Exposure Training
+export type ChallengeOutcome = 'success' | 'partial' | 'couldnt-go';
+export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
+
+export interface ExposureChallenge {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: ChallengeDifficulty;
+  iconName: string;
+}
+
+export interface ExposureLogEntry {
+  id: string;
+  challengeId: string;
+  challengeTitle: string;
+  preAnxiety: number; // 1-10
+  postAnxiety: number; // 1-10
+  outcome: ChallengeOutcome;
+  notes: string;
+  completedAt: string; // ISO date
+}

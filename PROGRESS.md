@@ -1,6 +1,6 @@
 # ReliefKey Progress Tracker
 
-## Current Version: v1.0 (Relief Tools)
+## Current Version: v1.2 (Exposure Training)
 
 ### Completed Features
 
@@ -14,7 +14,16 @@
 | Haptics Utility | Done | 3 passing | Light/medium/heavy patterns |
 | Audio Hook | Done | 4 passing | Play/stop/volume control |
 
-**Total: 28 tests passing, 82.65% line coverage**
+**Total: 42 tests passing**
+
+### v1.2 Features
+
+| Feature | Status | Tests | Notes |
+|---------|--------|-------|-------|
+| Progress Dashboard | Done | 4 passing | Streak, sessions, minutes stats; recent activity list |
+| useProgress Hook | Done | 4 passing | Session logging, streak tracking, AsyncStorage persistence |
+| Exposure Training | Done | 5 passing | Daily challenges, pre/post anxiety tracker, outcome logging |
+| useExposureTraining Hook | Done | 5 passing | Challenge system, adaptive difficulty, log persistence |
 
 ### Placeholder Features (v1.0)
 
@@ -35,10 +44,10 @@
 - [ ] Offline caching (5km radius)
 
 ### v1.2 - Exposure Training
-- [ ] Daily challenges
-- [ ] Progress logging (success/partial/couldn't go)
-- [ ] Anxiety level tracking (1-10)
-- [ ] Adaptive difficulty
+- [x] Daily challenges
+- [x] Progress logging (success/partial/couldn't go)
+- [x] Anxiety level tracking (1-10)
+- [x] Adaptive difficulty
 - [ ] Educational content
 
 ### Future Enhancements
@@ -92,4 +101,4 @@ git log --oneline
 
 ---
 
-*Last updated: 2026-01-13*
+*Last updated: 2026-04-04*

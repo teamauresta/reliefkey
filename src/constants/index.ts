@@ -56,4 +56,6 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
 
 export const STORAGE_KEYS = {
   PREFERENCES: '@reliefkey/preferences',
+  PROGRESS: '@reliefkey/progress',
+  EXPOSURE_LOGS: '@reliefkey/exposure-logs',
 };
