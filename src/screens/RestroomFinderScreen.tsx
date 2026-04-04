@@ -446,10 +446,10 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   filterBlur: {
-    backgroundColor: colors.glass.surface,
+    backgroundColor: 'rgba(10, 22, 40, 0.9)',
   },
   filterWebBlur: {
-    backgroundColor: 'rgba(10, 22, 40, 0.85)',
+    backgroundColor: 'rgba(10, 22, 40, 0.9)',
     backdropFilter: 'blur(40px)',
   },
   filterContent: {
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
   },
   countText: {
     ...typography.caption,
-    color: colors.text.secondary,
+    color: colors.text.primary,
     marginLeft: spacing.sm,
   },
 
@@ -476,18 +476,18 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.full,
     borderWidth: 1,
     borderColor: colors.glass.border,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.glass.surface,
   },
   chipActive: {
-    backgroundColor: colors.accent.primaryMuted,
+    backgroundColor: colors.accent.primary,
     borderColor: colors.accent.primary,
   },
   chipText: {
     ...typography.caption,
-    color: colors.text.secondary,
+    color: colors.text.primary,
   },
   chipTextActive: {
-    color: colors.accent.primary,
+    color: '#0a1628',
   },
 
   // FABs
