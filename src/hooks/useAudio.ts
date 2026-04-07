@@ -13,15 +13,15 @@ export type SoundType =
   | 'wind-hum';
 
 const SOUND_SOURCES: Record<SoundType, AVPlaybackSource> = {
-  'white-noise': require('../../assets/audio/white-noise.wav'),
-  'sea-wave': require('../../assets/audio/sea-wave.wav'),
-  'thunderstorm-jungle': require('../../assets/audio/thunderstorm-jungle.wav'),
-  'european-forest': require('../../assets/audio/european-forest.wav'),
-  'forest-bird': require('../../assets/audio/forest-bird.wav'),
-  'night-forest': require('../../assets/audio/night-forest.wav'),
-  'summer-night': require('../../assets/audio/summer-night.wav'),
-  'wind-blowing': require('../../assets/audio/wind-blowing.wav'),
-  'wind-hum': require('../../assets/audio/wind-hum.wav'),
+  'white-noise': require('../../assets/audio/white-noise.mp3'),
+  'sea-wave': require('../../assets/audio/sea-wave.mp3'),
+  'thunderstorm-jungle': require('../../assets/audio/thunderstorm-jungle.mp3'),
+  'european-forest': require('../../assets/audio/european-forest.mp3'),
+  'forest-bird': require('../../assets/audio/forest-bird.mp3'),
+  'night-forest': require('../../assets/audio/night-forest.mp3'),
+  'summer-night': require('../../assets/audio/summer-night.mp3'),
+  'wind-blowing': require('../../assets/audio/wind-blowing.mp3'),
+  'wind-hum': require('../../assets/audio/wind-hum.mp3'),
 };
 
 interface UseAudioReturn {
